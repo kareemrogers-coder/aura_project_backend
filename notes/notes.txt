@@ -1,0 +1,1 @@
+deleted pyhtondotenv from my requirements.txt, was causing an issue for hosted deployment.
