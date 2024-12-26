@@ -1,5 +1,6 @@
 from flask import request, jsonify
 from app.auth.routes import auth_bp
+from utils.util import token_required
 
 
 @auth_bp.route("/protected", methods=["GET"])

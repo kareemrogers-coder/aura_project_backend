@@ -6,6 +6,7 @@ from app.blueprints.images import images_bp
 from app.blueprints.leaderboard import leaderboard_bp
 from app.blueprints.leaderboardcomments import leaderboardcomments_bp
 from app.blueprints.leaderboardlike import leaderboardlike_bp
+from auth.routes import auth_bp
 from flask_jwt_extended import JWTManager
 from authlib.integrations.flask_client import OAuth
 
@@ -27,6 +28,7 @@ def create_app(config_name):
     app.register_blueprint(leaderboard_bp, url_perfix = "/leaderboard")
     app.register_blueprint(leaderboardcomments_bp, url_perfix = "/leaderboardcomments")
     app.register_blueprint(leaderboardlike_bp, url_perfix = "/leaderboardlike")
+    app.register_blueprint(auth_bp, url_perfix = "/protected" )
 
     @app.route('/')
     def home():
