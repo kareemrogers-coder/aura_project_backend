@@ -35,8 +35,15 @@ SECRET_KEY = os.environ.get('SECRET_KEY') #THIS IS BEING PULL FROM .ENV.
 #     token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
 def verify_token(token):
-    jsonurl = urlopen(f"heeps://{dev-y870izsbr3wx4epg.us.auth0.com}/.well-know/jwks.json")
+    print("Verifying token")
+
+    print("Opening URL")
+    jsonurl = urlopen(f"https://{dev-y870izsbr3wx4epg.us.auth0.com}/.well-know/jwks.json")
+
+    print("Reading json")
     jwks = json.loads(jsonurl.read())
+
+    print("Checking verified header")
     unverified_header = jwt.get_unverified_header(token)
 
     rsa_key = {}
