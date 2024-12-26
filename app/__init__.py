@@ -6,7 +6,7 @@ from app.blueprints.images import images_bp
 from app.blueprints.leaderboard import leaderboard_bp
 from app.blueprints.leaderboardcomments import leaderboardcomments_bp
 from app.blueprints.leaderboardlike import leaderboardlike_bp
-from auth import auth_bp
+from app.auth import auth_bp
 from flask_jwt_extended import JWTManager
 from authlib.integrations.flask_client import OAuth
 

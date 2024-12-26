@@ -1,5 +1,5 @@
 from flask import request, jsonify
-from auth import auth_bp
+from app.auth import auth_bp
 from utils.util import token_required
 
 
