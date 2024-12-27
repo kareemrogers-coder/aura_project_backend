@@ -8,6 +8,10 @@ from jose import jwt
 from urllib.request import urlopen
 import json
 
+Auth0_Domain = "dev-y870izsbr3wx4epg.us.auth0.com"
+API_IDENTIFIER = "this-is-our-logo-generator-app-project."
+ALGORITHMS = ["RS256"]
+
 import config
 
 

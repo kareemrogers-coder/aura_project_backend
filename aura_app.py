@@ -1,8 +1,12 @@
 from app import create_app
 from app.models import db
+from flask_cors import CORS
+from jose import jwt
+import json
 # from app.utils import token_required, verfiy_token
 
 app = create_app('ProductionConfig')
+CORS(app)
 
 # app = create_app('DevelopmentConfig')
 

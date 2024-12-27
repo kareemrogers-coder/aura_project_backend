@@ -75,7 +75,8 @@ def login():
 
         if user and check_password_hash(user.password, creds['password']): #If a user exist within the database, with the same email password combination
 
-            token = encode_token(user.id)
+            # token = encode_token(user.id)
+            token = verify_token(user.id) ##testing
 
             response = {
                 "message": "successfully logged in",
