@@ -3,8 +3,8 @@ import os
 from datetime import datetime, timedelta, timezone
 from  functools import wraps
 from flask import request, jsonify,Flask
-# from flask_cors import CORS
-# from jose import jwt
+from flask_cors import CORS
+from jose import jwt
 from urllib.request import urlopen
 import json
 
@@ -24,15 +24,15 @@ SECRET_KEY = os.environ.get('SECRET_KEY') #THIS IS BEING PULL FROM .ENV.
 #     return jwt.encode(payload, secret_key, algorithm= 'HS256')
 
 
-# #TOKEN CREATION 
-# def encode_token(user_id):
-#     payload = {
-#         'exp': datetime.now(timezone.utc) + timedelta(days= 0, hours = 2),
-#         'iat': datetime.now(timezone.utc), 
-#         'sub': user_id
-#     }
+#TOKEN CREATION 
+def encode_token(user_id):
+    payload = {
+        'exp': datetime.now(timezone.utc) + timedelta(days= 0, hours = 2),
+        'iat': datetime.now(timezone.utc), 
+        'sub': user_id
+    }
 
-#     token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+    token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
 def verify_token(token):
     print("Verifying token")

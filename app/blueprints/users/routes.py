@@ -5,7 +5,7 @@ from marshmallow import ValidationError
 from app.models import Users, db, OAuth
 from sqlalchemy import select
 from app.extensions import limiter
-from app.utils.util import token_required, verify_token
+from app.utils.util import token_required, verify_token, encode_token
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token
 import re
