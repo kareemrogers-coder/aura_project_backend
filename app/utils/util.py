@@ -9,6 +9,7 @@ from urllib.request import urlopen
 import json
 
 Auth0_Domain = "dev-y870izsbr3wx4epg.us.auth0.com"
+# Auth0_Domain = "dev-3niskqr7oyd1o1x3.us.auth0.com"
 API_IDENTIFIER = "this-is-our-logo-generator-app-project."
 ALGORITHMS = ["RS256"]
 
@@ -42,7 +43,7 @@ def verify_token(token):
     print("Verifying token")
 
     print("Opening URL")
-    jsonurl = urlopen(f"https://{dev-y870izsbr3wx4epg.us.auth0.com}/.well-know/jwks.json")
+    jsonurl = urlopen(f"https://{Auth0_Domain}/.well-know/jwks.json")
 
     print("Reading json")
     jwks = json.loads(jsonurl.read())
@@ -70,7 +71,7 @@ def verify_token(token):
                     rsa_key,
                     algorithms=ALGORITHMS,
                     audience=API_IDENTIFIER,
-                    issuer=f"https://{dev-y870izsbr3wx4epg.us.auth0.com}/",
+                    issuer=f"https://{Auth0_Domain}/",
                 )
                 print('PAYLOAD:', payload)
                 return payload

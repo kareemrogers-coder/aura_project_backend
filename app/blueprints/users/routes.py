@@ -126,7 +126,7 @@ def login():
 #     return user_schema.jsonify(new_user), 201 #return new user object as a response
 
 
-@users_bp.route("/", methods=['POST'])
+@users_bp.route("/sign-up", methods=['POST'])
 # @limiter.limit("3 per hour")
 def create_user():
     #Validate and Deserialize incoming data
