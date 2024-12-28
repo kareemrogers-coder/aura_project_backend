@@ -19,14 +19,14 @@ import config
 SECRET_KEY = os.environ.get('SECRET_KEY') #THIS IS BEING PULL FROM .ENV.
 
 
-# def token_generator(email):
-#     expiration_time = datetime.datetime.utcnow() + datetime.timedelta(hours=1)
-#     payload = {
-#         'email': email,
-#         'exp': expiration_time
-#     }
-#     secret_key = config('SERCET_KEY')
-#     return jwt.encode(payload, secret_key, algorithm= 'HS256')
+def token_generator(email):
+    expiration_time = datetime.datetime.utcnow() + datetime.timedelta(hours=1)
+    payload = {
+        'email': email,
+        'exp': expiration_time
+    }
+    secret_key = config('SERCET_KEY')
+    return jwt.encode(payload, secret_key, algorithm= 'HS256')
 
 
 #TOKEN CREATION 
