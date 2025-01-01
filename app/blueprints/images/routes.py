@@ -10,7 +10,7 @@ from flask_sqlalchemy import SQLAlchemy
 def allowed_file(filename):
     return "." in filename and filename.rsplit('.', 1)[1].lower() in {"png", "jpg", "jpeg", "gif"} 
 
-@images_bp.route('/upload', method=['POST'])
+@images_bp.route('/upload', methods=['POST'])
 def image_upload():
     if 'image' not in request.files:
         return jsonify ({"error": "No file part" }), 400
@@ -38,7 +38,7 @@ def image_upload():
     return jsonify({"error": "Invalid file formate"}), 400
 
 
-@images_bp.route('/users_images/<int:user_id>', method=['Get'])
+@images_bp.route('/users_images/<int:user_id>', methods=['Get'])
 def get_user_images(user_id):
 
     images = Images.query.filter_by(user_id=user_id).all()
