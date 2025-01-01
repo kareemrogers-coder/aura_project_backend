@@ -16,6 +16,7 @@ oauth = OAuth()
 def create_app(config_name):
     app= Flask(__name__)
     app.config.from_object(f'config.{config_name}')
+    
 
     #extension
     db.init_app(app)
@@ -33,6 +34,9 @@ def create_app(config_name):
     @app.route('/')
     def home():
         return jsonify({"Message": "Welcome to Aura API"})
+    
+
+
 
     return app
 

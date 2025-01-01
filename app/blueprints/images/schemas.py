@@ -6,4 +6,4 @@ class ImagesSchema(ma.SQLAlchemyAutoSchema):
         model = Images
 
 image_schema = ImagesSchema()
-image_schema = ImagesSchema(many=True)
+images_schema = ImagesSchema(many=True)
