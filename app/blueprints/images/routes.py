@@ -6,6 +6,7 @@ from werkzeug.utils import secure_filename
 from app.blueprints.images import images_bp
 from io import BytesIO
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import select
 
 def allowed_file(filename):
     return "." in filename and filename.rsplit('.', 1)[1].lower() in {"png", "jpg", "jpeg", "gif"} 
@@ -44,3 +45,11 @@ def get_user_images(user_id):
     images = Images.query.filter_by(user_id=user_id).all()
     image_list = [{"images_id": img.id} for img in images]
     return jsonify({ "user_id": user_id, "images": image_list}), 200
+
+
+@images_bp.route("/", methods=["GET"])
+def get_images():
+    query = select(Images)
+    users = db.session.execute(query).scalars().all()
+
+    return images_schema.jsonify(users), 200
