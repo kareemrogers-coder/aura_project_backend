@@ -7,6 +7,9 @@ from app.blueprints.images import images_bp
 from io import BytesIO
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import select
+from flask_login import current_user
+
+
 
 def allowed_file(filename):
     return "." in filename and filename.rsplit('.', 1)[1].lower() in {"png", "jpg", "jpeg", "gif"} 
@@ -15,28 +18,36 @@ def allowed_file(filename):
 def image_upload():
     if 'image' not in request.files:
         return jsonify ({"error": "No file part" }), 400
+    
+
     file = request.files['image']
+
+
     if file.filename == '':
         return jsonify ({"error": "No selected file"}), 400
+    
     if file and allowed_file(file.filename):
 
-        user_id = request.form.get('user_id')
+        if not current_user.is_authenticated:
+            return jsonify({"error": "User not authenticated"}), 401
+
+        # user_id = request.form.get('user_id')
 
         filename = secure_filename(file.filename)
 
         img = Image.open(file.stream)
-        img_byte_arr = BytesIO
-        img.save(img_byte_arr, formate = 'PNG')
+        img_byte_arr = BytesIO()
+        img.save(img_byte_arr, format = 'PNG')
         img_byte_arr.seek(0)
 
-        new_image = Images(image=img_byte_arr.read(), user_id=user_id)
+        new_image = Images(image=img_byte_arr.read(), user_id = current_user.id)
 
         db.session.add(new_image)
         db.session.commit()
 
         return jsonify({ "messages": "Images uploaded successfully", "images_id": new_image.id}), 201
     
-    return jsonify({"error": "Invalid file formate"}), 400
+    return jsonify({"error": "Invalid file format"}), 400
 
 
 @images_bp.route('/users_images/<int:user_id>', methods=['Get'])
