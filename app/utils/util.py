@@ -43,12 +43,12 @@ def verify_token(token):
     print("Verifying token")
 
     print("Opening URL")
-    jsonurl = urlopen(f"https://{Auth0_Domain}/.well-know/jwks.json")
+    jsonurl = urlopen(f"https://{Auth0_Domain}/.well-known/jwks.json")
 
-    print("Reading json")
+    # print("Reading json")
     jwks = json.loads(jsonurl.read())
 
-    print("Checking verified header")
+    # print("Checking verified header")
     unverified_header = jwt.get_unverified_header(token)
 
     rsa_key = {}
@@ -61,9 +61,8 @@ def verify_token(token):
                 "use": key["use"],
                 "n": key["n"],
                 "e": key ["e"],
-
-
             }
+
         if rsa_key:
             try:
                 payload = jwt.decode(
@@ -79,9 +78,10 @@ def verify_token(token):
                 raise ValueError ("Token is expired.")
             except jwt.JWTClaimsError:
                 raise ValueError("Incorrect claims. Check the audience and issuer.")
-            except Exception:
-                raise ValueError("unable to verify autheication token")
-        raise ValueError("No matching RSA Key")
+            except Exception as e:
+                raise ValueError(f"unable to verify autheication token: {e}")
+        else:
+            raise ValueError("No matching RSA Key")
     
 
 

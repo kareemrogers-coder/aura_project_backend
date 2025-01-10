@@ -21,7 +21,78 @@ def pwd_validation(password):
     return None
 
 
-# Login user
+# Login user v1
+# @users_bp.route("/login", methods=['POST'])
+# def login():
+#     #verify if the request from the frontend contains a Oauth token
+
+#     info = request.get_json()
+
+#     google_login = info.get('google_login')
+#     google_token = info.get('google_token')
+
+#     #Validate the payload and ensure they sent us email and password
+#     try:
+#         creds = login_schema.load(request.json)
+#     except ValidationError as e:
+#         return jsonify(e.messages), 400
+    
+#     query = select(Users).where(Users.email == creds['email'])
+#     user = db.session.execute(query).scalars().first()
+
+#     if google_login and google_token:
+#         google = OAuth.create_client('google')
+#         try:
+#             token = google.authorize_access_token()
+#             user_info = google.parse_id_token(token)
+
+#             email = user_info['email']
+#             name = user_info['name']
+
+#             user = Users.query.filter_by(email=email).first()
+
+#             #if user exist 
+#             if user:
+#                 access_token = token_generator(email)
+#                 return jsonify({'access_token': access_token, 'user_info': {'email': email, 'name': name}}), 200
+#             else:
+#                 new_google_user = Users(email=email, name=name, password=None)
+#                 db.session.add(new_google_user)
+#                 db.session.commit()
+
+#                 access_token = token_generator(email)
+
+#                 return jsonify({
+#                     'message': "token generated successfully",
+#                     'access_token': access_token,
+#                     'user_info': {'email': email, 'name': name}}), 201
+
+#         except Exception as e:
+#             return jsonify({"message": "Invalid Google Token",}), 400
+
+
+#     else:
+
+#         if user and check_password_hash(user.password, creds['password']): #If a user exist within the database, with the same email password combination
+
+#             token = encode_token(user.id)
+#             # token = verify_token(user.id) ##testing
+
+#             response = {
+#                 "message": "successfully logged in",
+#                 "status": "success",
+#                 "token": token
+#             }
+        
+#             return jsonify(response), 200
+        
+#         else:
+#             return jsonify({"message": "Invalid email or password!"}), 400
+    
+
+
+# Login user v2
+
 @users_bp.route("/login", methods=['POST'])
 def login():
     #verify if the request from the frontend contains a Oauth token
@@ -30,15 +101,10 @@ def login():
 
     google_login = info.get('google_login')
     google_token = info.get('google_token')
+    auth0_token = info.get('auth0_token')
 
-    #Validate the payload and ensure they sent us email and password
-    try:
-        creds = login_schema.load(request.json)
-    except ValidationError as e:
-        return jsonify(e.messages), 400
-    
-    query = select(Users).where(Users.email == creds['email'])
-    user = db.session.execute(query).scalars().first()
+  
+
 
     if google_login and google_token:
         google = OAuth.create_client('google')
@@ -70,13 +136,44 @@ def login():
         except Exception as e:
             return jsonify({"message": "Invalid Google Token",}), 400
 
+    if auth0_token:
+        try:
+            payload = verify_token(auth0_token)
 
-    else:
+            email = payload['email']
+            name = payload['name']
 
-        if user and check_password_hash(user.password, creds['password']): #If a user exist within the database, with the same email password combination
+            user = Users.query.filter_by(email=email).first()
+            if user:
+                access_token = token_generator(email)
+                return jsonify({ 'access_token': access_token, 'user_info': {'email': email, 'name': name}}), 200
+            else:
+                new_user = Users(email=email, name=name, password=None)
+                db.session.add(new_user)
+                db.session.commit()
+                access_token = token_generator(email)
+
+                return jsonify({
+                    'message': "Token generated successfully",
+                    'access_token': access_token,
+                    'user_info': {'email': email, 'name': name}
+                }), 201
+        except ValidationError as e:
+            return jsonify({"message": str(e)}), 400
+        
+       #Validate the payload and ensure they sent us email and password   
+    try:
+        creds = login_schema.load(request.json)
+    except ValidationError as e:
+        return jsonify(e.messages), 400
+    
+    query = select(Users).where(Users.email == creds['email'])
+    user = db.session.execute(query).scalars().first()
+
+
+    if user and check_password_hash(user.password, creds['password']): #If a user exist within the database, with the same email password combination
 
             token = encode_token(user.id)
-            # token = verify_token(user.id) ##testing
 
             response = {
                 "message": "successfully logged in",
@@ -86,11 +183,8 @@ def login():
         
             return jsonify(response), 200
         
-        else:
-            return jsonify({"message": "Invalid email or password!"}), 400
-    
-
-
+        
+    return jsonify({"message": "Invalid email or password!"}), 400
 
 
 
