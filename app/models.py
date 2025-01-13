@@ -21,7 +21,7 @@ class Users(Base):
     email: Mapped[str] = mapped_column(db.String(100), nullable=False, unique=True)
     # phone: Mapped[str]= mapped_column(db.String(20))
     # dob: Mapped[date] = mapped_column(nullable=False)
-    password: Mapped[str] = mapped_column(db.String(500), nullable=False)
+    password: Mapped[str] = mapped_column(db.String(500), nullable=True)
 
     images: Mapped[List['Images']] = db.relationship('Images', back_populates = 'user')
     leaderboard_images: Mapped[List['Leaderboard']] = db.relationship('Leaderboard', back_populates='user')

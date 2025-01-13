@@ -1,12 +1,15 @@
-import jwt
+# import jwt
 import os
 from datetime import datetime, timedelta, timezone
 from  functools import wraps
 from flask import request, jsonify,Flask
-from flask_cors import CORS
-from jose import jwt
+# from flask_cors import CORS
 from urllib.request import urlopen
 import json
+from jose import jwt,jwe
+import requests
+from flask_jwt_extended import decode_token, create_access_token
+from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
 
 Auth0_Domain = "dev-y870izsbr3wx4epg.us.auth0.com"
 # Auth0_Domain = "dev-3niskqr7oyd1o1x3.us.auth0.com"
@@ -25,8 +28,12 @@ def token_generator(email):
         'email': email,
         'exp': expiration_time
     }
-    secret_key = config('SERCET_KEY')
-    return jwt.encode(payload, secret_key, algorithm= 'HS256')
+    private_key = open("private.key","r").read()
+    return jwt.encode(payload, private_key, algorithm='RS256')
+    # secret_key = config('SECRET_KEY')
+    # return jwt.encode(payload, secret_key, algorithms = 'RS256')
+
+
 
 
 #TOKEN CREATION 
@@ -37,7 +44,9 @@ def encode_token(user_id):
         'sub': user_id
     }
 
-    token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+    token = jwt.encode(payload, SECRET_KEY, algorithms ='RS256') #HS256
+
+
 
 def verify_token(token):
     print("Verifying token")
@@ -50,6 +59,29 @@ def verify_token(token):
 
     # print("Checking verified header")
     unverified_header = jwt.get_unverified_header(token)
+    print("Unverified header:", unverified_header) # debug
+
+    # if "alg" in unverified_header:
+    #     print(f"Algorithm used in JWT: {unverified_header['alg']}")
+    # else:
+    #     print("No Algorithm found in JWT header")
+
+    # if unverified_header and unverified_header["alg"] == "dir":
+    #     print("Using symmetric key for verification (dir algorithms)")
+    #     secret_key = SECRET_KEY
+    #     try:
+    #         payload = jwt.decode(
+    #                 token,
+    #                 options={"verify_signature": False},
+    #                 algorithms=['dir'],
+    #                 key=None,
+    #                 audience= API_IDENTIFIER,
+    #                 issuer=f"https://{Auth0_Domain}/",)#token, sercet_key, algorithms= ['dir']
+    #         print('Payload:', payload)
+    #         return payload
+    #     except Exception as e:
+    #         raise ValueError(f"Unable to verify token: {e}")
+
 
     rsa_key = {}
 
@@ -74,6 +106,10 @@ def verify_token(token):
                 )
                 print('PAYLOAD:', payload)
                 return payload
+            
+        
+
+        
             except jwt.ExpiredSignatureError:
                 raise ValueError ("Token is expired.")
             except jwt.JWTClaimsError:
@@ -85,24 +121,24 @@ def verify_token(token):
     
 
 
-def token_required(func):
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        token = None
 
-        if 'Authorization' in request.headers:
-            try:
-                token = request.headers['Authorization'].split()[1]
-                payload = jwt.decode(token, SECRET_KEY, algorithms='HS256')
-                print("PAYLOAD:", payload)       
-            except jwt.ExpiredSignatureError:
-                return jsonify({'message': "Token has expired"}), 401
-            except jwt.InvalidTokenError:
-                return jsonify({"message": "Invalid Token"}), 401  
 
-            return func(payload, *args, **kwargs)
-        else:
-            return jsonify({"messages": "Token Authorization required"}), 401
+def token_required(f):
+    def decorated(*args, **kwargs):
+        auth = request.headers.get("Authorization", None)
+        if not auth:
+            return jsonify({"message": "Authorization header is missing"}), 401
         
-    return wrapper
+        if "Bearer" not in auth:
+            return jsonify({"message": "Bearer <Token> required"}), 401
 
+        try:
+            #Authorization: "Bearer <token>"
+            token = auth.split()[1]
+            payload = verify_token(token) #Sending token to be decrypted
+        except ValueError as e:
+            return jsonify({"message": str(e)}), 401
+
+        return f(payload, *args, **kwargs)
+
+    return decorated
