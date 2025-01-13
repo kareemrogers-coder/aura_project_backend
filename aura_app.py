@@ -5,8 +5,8 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 
 # from app.utils import token_required, verfiy_token
-app = create_app('DevelopmentConfig')
-# app = create_app('ProductionConfig')
+# app = create_app('DevelopmentConfig')
+app = create_app('ProductionConfig')
 jwt= JWTManager(app) ###new
 CORS(app)
 
