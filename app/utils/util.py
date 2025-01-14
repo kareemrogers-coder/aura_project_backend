@@ -14,7 +14,8 @@ from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
 Auth0_Domain = "dev-y870izsbr3wx4epg.us.auth0.com"
 # Auth0_Domain = "dev-3niskqr7oyd1o1x3.us.auth0.com"
 API_IDENTIFIER = "this-is-our-logo-generator-app-project."
-ALGORITHMS = ["RS256"]
+#ALGORITHMS = ["RS256"]
+ALGORITHMS = ["HS256"]
 
 import config
 
