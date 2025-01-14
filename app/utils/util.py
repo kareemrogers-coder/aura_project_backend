@@ -14,8 +14,8 @@ from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
 Auth0_Domain = "dev-y870izsbr3wx4epg.us.auth0.com"
 # Auth0_Domain = "dev-3niskqr7oyd1o1x3.us.auth0.com"
 API_IDENTIFIER = "this-is-our-logo-generator-app-project."
-#ALGORITHMS = ["RS256"]
-ALGORITHMS = ["HS256"]
+ALGORITHMS = ["RS256"]
+#ALGORITHMS = ["HS256"]
 
 import config
 
@@ -30,7 +30,7 @@ def token_generator(email):
         'exp': expiration_time
     }
     private_key = open("private.key","r").read()
-    return jwt.encode(payload, private_key, algorithm='RS256')
+    return jwt.encode(payload, private_key, algorithm='RS256') # change back to RS256
     # secret_key = config('SECRET_KEY')
     # return jwt.encode(payload, secret_key, algorithms = 'RS256')
 
@@ -45,7 +45,7 @@ def encode_token(user_id):
         'sub': user_id
     }
 
-    token = jwt.encode(payload, SECRET_KEY, algorithms ='RS256') #HS256
+    token = jwt.encode(payload, SECRET_KEY, algorithms ='RS256') #HS256 RS256
 
 
 
