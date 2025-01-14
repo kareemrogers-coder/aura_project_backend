@@ -5,8 +5,8 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 
 # from app.utils import token_required, verfiy_token
-# app = create_app('DevelopmentConfig')
-app = create_app('ProductionConfig')
+app = create_app('DevelopmentConfig')
+#app = create_app('ProductionConfig')
 jwt= JWTManager(app) ###new
 CORS(app)
 
@@ -16,9 +16,9 @@ API_IDENTIFIER = "this-is-our-logo-generator-app-project."
 ALGOTITHMS = ["RS256"]
 
 
-#if __name__ == '__main__': # code was commented out to set enivornment for render
-with app.app_context(): # code was indented out one tab.
-                #db.drop_all()
-                db.create_all()
+if __name__ == '__main__': # code was commented out to set enivornment for render
+        with app.app_context(): # code was indented out one tab.
+                db.drop_all()
+                #db.create_all()
     
-#app.run(debug=True) # code was commented out to set up enivornment for render
+app.run(debug=True) # code was commented out to set up enivornment for render
