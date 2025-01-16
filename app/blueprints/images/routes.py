@@ -16,7 +16,7 @@ upload_folder = os.path.join(os.getcwd(), 'uploads')
 allowed_extension ={"png", "jpg", "jpeg","gif"}
 
 #id the dir doesnt exist then create it.
-if not os.path.exist(upload_folder):
+if not os.path.exists(upload_folder):
     os.markdirs(upload_folder)
 
 def allowed_file(filename):
