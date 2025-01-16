@@ -34,7 +34,8 @@ class Images(Base):
 
     id: Mapped[int] = mapped_column(primary_key= True)
     # image: Mapped[blob] = mapped_column(db.LargeBinary)
-    image = db.Column(db.LargeBinary, nullable=False)
+    # image = db.Column(db.LargeBinary, nullable=False)
+    image_url = Mapped[str] = mapped_column(db.String(800), nullable=False)
     user_id: Mapped[int] = mapped_column(db.ForeignKey('users.id'))
 
     # leaderboard_images: Mapped[List['Leaderboard]] = db.relationship('Leaderbaord', back_populates='orignal_image')
@@ -45,7 +46,8 @@ class Images(Base):
 class Leaderboard(Base):
     __tablename__ = 'leaderboard'
     id: Mapped[int] = mapped_column(primary_key=True)
-    image = db.Column(db.LargeBinary, nullable=False)
+    image_url = Mapped[str] = mapped_column(db.String(800), nullable=False)
+    # image = db.Column(db.LargeBinary, nullable=False)
     user_id: Mapped[int] = mapped_column(db.ForeignKey('users.id'))
     original_image_id: Mapped[int] = mapped_column(db.ForeignKey('images.id'))
 
