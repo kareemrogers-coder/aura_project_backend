@@ -46,7 +46,7 @@ class Images(Base):
 class Leaderboard(Base):
     __tablename__ = 'leaderboard'
     id: Mapped[int] = mapped_column(primary_key=True)
-    image_url = Mapped[str] = mapped_column(db.String(800), nullable=False)
+    image_url: Mapped[str] = mapped_column(db.String(800), nullable=False)
     # image = db.Column(db.LargeBinary, nullable=False)
     user_id: Mapped[int] = mapped_column(db.ForeignKey('users.id'))
     original_image_id: Mapped[int] = mapped_column(db.ForeignKey('images.id'))
