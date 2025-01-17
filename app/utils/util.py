@@ -11,9 +11,10 @@ import requests
 from flask_jwt_extended import decode_token, create_access_token
 from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
 
-Auth0_Domain = "dev-y870izsbr3wx4epg.us.auth0.com"
+Auth0_Domain = "http://dev-3niskqr7oyd1o1x3.us.auth0.com"
 # Auth0_Domain = "dev-3niskqr7oyd1o1x3.us.auth0.com"
-API_IDENTIFIER = "this-is-our-logo-generator-app-project."
+# API_IDENTIFIER = "this-is-our-logo-generator-app-project."
+API_IDENTIFIER = "aura-gen"
 ALGORITHMS = ["RS256"]
 #ALGORITHMS = ["HS256"]
 
