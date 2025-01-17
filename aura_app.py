@@ -11,10 +11,10 @@ jwt= JWTManager(app) ###new
 CORS(app)
 
 
-# Auth0_Domain = "dev-y870izsbr3wx4epg.us.auth0.com"
-Auth0_Domain = "dev-3niskqr7oyd1o1x3.us.auth0.com"
-# API_IDENTIFIER = "this-is-our-logo-generator-app-project."
-API_IDENTIFIER = "aura-gen"
+# Auth0_Domain = "dev-y870izsbr3wx4epg.us.auth0.com" #zab
+Auth0_Domain = "dev-3niskqr7oyd1o1x3.us.auth0.com" #kareem
+API_IDENTIFIER = "this-is-our-logo-generator-app-project."
+# API_IDENTIFIER = "aura-gen"
 ALGOTITHMS = ["RS256"]
 
 
