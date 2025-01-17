@@ -12,7 +12,7 @@ CORS(app)
 
 
 # Auth0_Domain = "dev-y870izsbr3wx4epg.us.auth0.com"
-Auth0_Domain = "http://dev-3niskqr7oyd1o1x3.us.auth0.com"
+Auth0_Domain = "dev-3niskqr7oyd1o1x3.us.auth0.com"
 # API_IDENTIFIER = "this-is-our-logo-generator-app-project."
 API_IDENTIFIER = "aura-gen"
 ALGOTITHMS = ["RS256"]
