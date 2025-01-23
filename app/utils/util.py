@@ -11,11 +11,10 @@ import requests
 from flask_jwt_extended import decode_token, create_access_token
 from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
 
-# Auth0_Domain = "http://dev-3niskqr7oyd1o1x3.us.auth0.com"
-# Auth0_Domain = "dev-3niskqr7oyd1o1x3.us.auth0.com" # zab
+
 Auth0_Domain = "dev-y870izsbr3wx4epg.us.auth0.com" #Kareem
 API_IDENTIFIER = "this-is-our-logo-generator-app-project."
-# API_IDENTIFIER = "aura-gen"
+
 ALGORITHMS = ["RS256"]
 #ALGORITHMS = ["HS256"]
 
@@ -47,7 +46,7 @@ def encode_token(user_id):
         'sub': user_id
     }
 
-    token = jwt.encode(payload, SECRET_KEY, algorithms ='RS256') #HS256 RS256
+    token = jwt.encode(payload, SECRET_KEY, algorithms ='RS256')
 
 
 
@@ -63,28 +62,6 @@ def verify_token(token):
     # print("Checking verified header")
     unverified_header = jwt.get_unverified_header(token)
     print("Unverified header:", unverified_header) # debug
-
-    # if "alg" in unverified_header:
-    #     print(f"Algorithm used in JWT: {unverified_header['alg']}")
-    # else:
-    #     print("No Algorithm found in JWT header")
-
-    # if unverified_header and unverified_header["alg"] == "dir":
-    #     print("Using symmetric key for verification (dir algorithms)")
-    #     secret_key = SECRET_KEY
-    #     try:
-    #         payload = jwt.decode(
-    #                 token,
-    #                 options={"verify_signature": False},
-    #                 algorithms=['dir'],
-    #                 key=None,
-    #                 audience= API_IDENTIFIER,
-    #                 issuer=f"https://{Auth0_Domain}/",)#token, sercet_key, algorithms= ['dir']
-    #         print('Payload:', payload)
-    #         return payload
-    #     except Exception as e:
-    #         raise ValueError(f"Unable to verify token: {e}")
-
 
     rsa_key = {}
 
@@ -144,4 +121,4 @@ def token_required(f):
 
         return f(payload, *args, **kwargs)
 
-    return decorated
+    return decorated 
